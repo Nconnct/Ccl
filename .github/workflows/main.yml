@@ -1,0 +1,25 @@
+name: Build Windows GUI Calculator
+
+on:
+  push:
+    branches: ["main"]
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: windows-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Build Calculator
+        shell: powershell
+        run: |
+          gcc -std=c11 -Wall -Wextra -O2 src/main.c -o calculator.exe -mwindows -luser32 -lgdi32 -lm
+
+      - name: Upload EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: C-Calculator-Windows
+          path: calculator.exe
